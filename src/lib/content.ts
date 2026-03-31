@@ -187,13 +187,17 @@ export const getEssayBySlug = getContentBySlug<Essay>('essays', (_, metadata, co
 function parseContent(content: string): { metadata: any; content: string } {
   const metadata: any = {};
   let contentStart = 0;
+  
+  // Trim leading whitespace first and find where the actual content starts
+  const leadingWhitespaceLength = content.length - content.trimStart().length;
+  const trimmedContent = content.slice(leadingWhitespaceLength);
 
   // 简单的 YAML front matter 解析
-  if (content.startsWith('---')) {
-    const endIndex = content.indexOf('---', 3);
-    if (endIndex !== -1) {
-      const frontMatter = content.slice(3, endIndex);
-      contentStart = endIndex + 3;
+  if (trimmedContent.startsWith('---')) {
+    const endIndexInTrimmed = trimmedContent.indexOf('---', 3);
+    if (endIndexInTrimmed !== -1) {
+      const frontMatter = trimmedContent.slice(3, endIndexInTrimmed);
+      contentStart = leadingWhitespaceLength + endIndexInTrimmed + 3;
       
       frontMatter.split('\n').forEach(line => {
         const [key, ...valueParts] = line.split(':');
