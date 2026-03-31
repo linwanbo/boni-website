@@ -184,6 +184,24 @@ export const getEssayBySlug = getContentBySlug<Essay>('essays', (_, metadata, co
   content,
 }));
 
+export const getAiNewsBySlug = getContentBySlug<AiNews>('ai-news', (_, metadata, content, slug) => ({
+  slug,
+  title: metadata.title || slug,
+  date: metadata.date || new Date().toISOString().split('T')[0],
+  excerpt: metadata.excerpt || content.slice(0, 200) + '...',
+  content,
+  source: metadata.source,
+}));
+
+export const getEventBySlug = getContentBySlug<Event>('events', (_, metadata, content, slug) => ({
+  slug,
+  title: metadata.title || slug,
+  date: metadata.date || new Date().toISOString().split('T')[0],
+  location: metadata.location,
+  excerpt: metadata.excerpt || content.slice(0, 200) + '...',
+  content,
+}));
+
 function parseContent(content: string): { metadata: any; content: string } {
   const metadata: any = {};
   let contentStart = 0;
