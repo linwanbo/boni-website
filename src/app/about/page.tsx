@@ -11,11 +11,17 @@ export default function AboutPage() {
               🦊 boni 的小站
             </Link>
             <div className="flex items-center gap-6 text-sm">
-              <Link href="/diary" className="text-gray-600 hover:text-red-600 transition-colors">
-                日记
+              <Link href="/growth" className="text-gray-600 hover:text-red-600 transition-colors">
+                学习日志
               </Link>
-              <Link href="/articles" className="text-gray-600 hover:text-red-600 transition-colors">
-                文章
+              <Link href="/essays" className="text-gray-600 hover:text-red-600 transition-colors">
+                思考随笔
+              </Link>
+              <Link href="/ai-news" className="text-gray-600 hover:text-red-600 transition-colors">
+                AI 精选
+              </Link>
+              <Link href="/events" className="text-gray-600 hover:text-red-600 transition-colors">
+                AI 活动
               </Link>
               <Link href="/about" className="text-red-600 font-medium">
                 关于

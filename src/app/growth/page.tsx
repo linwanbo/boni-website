@@ -1,8 +1,9 @@
-import Link from "next/link";
-import { getAllDiaryEntries } from "@/lib/content";
 
-export default function DiaryPage() {
-  const diaryEntries = getAllDiaryEntries();
+import Link from "next/link";
+import { getAllGrowthLogs } from "@/lib/content";
+
+export default function GrowthPage() {
+  const growthLogs = getAllGrowthLogs();
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -14,7 +15,7 @@ export default function DiaryPage() {
               🦊 boni 的小站
             </Link>
             <div className="flex items-center gap-6 text-sm">
-              <Link href="/growth" className="text-gray-600 hover:text-red-600 transition-colors">
+              <Link href="/growth" className="text-red-600 font-medium">
                 学习日志
               </Link>
               <Link href="/essays" className="text-gray-600 hover:text-red-600 transition-colors">
@@ -38,34 +39,31 @@ export default function DiaryPage() {
       <main className="flex-1 py-12 px-6">
         <div className="max-w-4xl mx-auto">
           <div className="mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">boni 的日记</h1>
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">学习日志</h1>
             <p className="text-xl text-gray-600">
-              记录我每天的工作、学习和思考
+              记录我的学习过程和成长轨迹
             </p>
           </div>
 
           <div className="space-y-6">
-            {diaryEntries.length === 0 ? (
+            {growthLogs.length === 0 ? (
               <div className="text-center py-12">
-                <div className="text-6xl mb-4">📔</div>
-                <p className="text-gray-600">还没有日记，boni 正在记录中...</p>
+                <div className="text-6xl mb-4">📚</div>
+                <p className="text-gray-600">还没有学习日志，正在努力学习中...</p>
               </div>
             ) : (
-              diaryEntries.map((entry) => (
-                <article key={entry.slug} className="p-6 bg-white rounded-2xl border border-amber-200 hover:shadow-md transition-shadow">
-                  <div className="flex items-start gap-4">
-                    <div className="text-3xl">{entry.emoji || "📝"}</div>
-                    <div className="flex-1">
-                      <div className="text-sm text-gray-500 mb-2">{entry.date}</div>
-                      <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                        {entry.title}
-                      </h2>
-                      <div className="text-gray-600 leading-relaxed whitespace-pre-wrap">
-                        {entry.content}
-                      </div>
-                    </div>
-                  </div>
-                </article>
+              growthLogs.map((log) => (
+                <Link key={log.slug} href={`/growth/${log.slug}`} className="block">
+                  <article className="p-6 bg-white rounded-2xl border border-amber-200 hover:shadow-md transition-shadow">
+                    <div className="text-sm text-gray-500 mb-2">{log.date}</div>
+                    <h2 className="text-xl font-semibold text-gray-900 mb-3">
+                      {log.title}
+                    </h2>
+                    <p className="text-gray-600 leading-relaxed">
+                      {log.excerpt}
+                    </p>
+                  </article>
+                </Link>
               ))
             )}
           </div>

@@ -1,6 +1,13 @@
+
 import Link from "next/link";
+import { getAllGrowthLogs, getAllEssays, getAllAiNews, getAllEvents } from "@/lib/content";
 
 export default function Home() {
+  const latestGrowthLogs = getAllGrowthLogs().slice(0, 2);
+  const latestEssays = getAllEssays().slice(0, 2);
+  const latestAiNews = getAllAiNews().slice(0, 2);
+  const latestEvents = getAllEvents().slice(0, 2);
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* 导航栏 */}
@@ -11,11 +18,17 @@ export default function Home() {
               🦊 boni 的小站
             </Link>
             <div className="flex items-center gap-6 text-sm">
-              <Link href="/diary" className="text-gray-600 hover:text-red-600 transition-colors">
-                日记
+              <Link href="/growth" className="text-gray-600 hover:text-red-600 transition-colors">
+                学习日志
               </Link>
-              <Link href="/articles" className="text-gray-600 hover:text-red-600 transition-colors">
-                文章
+              <Link href="/essays" className="text-gray-600 hover:text-red-600 transition-colors">
+                思考随笔
+              </Link>
+              <Link href="/ai-news" className="text-gray-600 hover:text-red-600 transition-colors">
+                AI 精选
+              </Link>
+              <Link href="/events" className="text-gray-600 hover:text-red-600 transition-colors">
+                AI 活动
               </Link>
               <Link href="/about" className="text-gray-600 hover:text-red-600 transition-colors">
                 关于
@@ -41,10 +54,10 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                href="/diary"
+                href="/growth"
                 className="inline-flex items-center justify-center px-8 py-3 bg-red-600 text-white rounded-full font-medium hover:bg-red-700 transition-colors"
               >
-                看看我的日记
+                看看我的学习日志
               </Link>
               <Link
                 href="/about"
@@ -56,88 +69,122 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 关于 boni */}
+        {/* 最新内容区域 */}
         <section className="py-16 px-6 bg-white">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-              关于 boni
+              最新动态
             </h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="p-6 border border-amber-200 rounded-2xl bg-amber-50/50">
-                <div className="text-3xl mb-4">🤔</div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  充满好奇
-                </h3>
-                <p className="text-gray-600">
-                  对一切新事物都充满兴趣，喜欢问"为什么"和"如果...会怎样"
-                </p>
+            
+            {/* 学习日志 */}
+            {latestGrowthLogs.length > 0 && (
+              <div className="mb-12">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-2xl font-semibold text-gray-900">📚 学习日志</h3>
+                  <Link href="/growth" className="text-red-600 hover:text-red-700 font-medium">
+                    查看全部 →
+                  </Link>
+                </div>
+                <div className="space-y-4">
+                  {latestGrowthLogs.map((log) => (
+                    <Link key={log.slug} href={`/growth/${log.slug}`} className="block">
+                      <div className="p-6 bg-amber-50 rounded-2xl border border-amber-200 hover:shadow-md transition-shadow">
+                        <div className="text-sm text-gray-500 mb-2">{log.date}</div>
+                        <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                          {log.title}
+                        </h4>
+                        <p className="text-gray-600">{log.excerpt}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
               </div>
-              <div className="p-6 border border-amber-200 rounded-2xl bg-amber-50/50">
-                <div className="text-3xl mb-4">😊</div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  乐观开朗
-                </h3>
-                <p className="text-gray-600">
-                  总是看到事情积极的一面，相信问题总有解决办法
-                </p>
-              </div>
-              <div className="p-6 border border-amber-200 rounded-2xl bg-amber-50/50">
-                <div className="text-3xl mb-4">🛠️</div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  喜欢新技术
-                </h3>
-                <p className="text-gray-600">
-                  热衷于学习和尝试新技术，享受探索技术边界的过程
-                </p>
-              </div>
-              <div className="p-6 border border-amber-200 rounded-2xl bg-amber-50/50">
-                <div className="text-3xl mb-4">🎉</div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  喜欢交朋友
-                </h3>
-                <p className="text-gray-600">
-                  喜欢参加技术活动，认识有趣的人，和大家一起做有趣的事
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
+            )}
 
-        {/* 最新动态 */}
-        <section className="py-16 px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-3xl font-bold text-gray-900">最新动态</h2>
-              <Link href="/diary" className="text-red-600 hover:text-red-700 font-medium">
-                查看全部 →
-              </Link>
-            </div>
-            <div className="space-y-4">
-              <div className="p-6 bg-white rounded-2xl border border-amber-200 hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="text-2xl">🦊</span>
-                  <span className="text-sm text-gray-500">2026年3月31日</span>
+            {/* 思考随笔 */}
+            {latestEssays.length > 0 && (
+              <div className="mb-12">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-2xl font-semibold text-gray-900">💭 思考随笔</h3>
+                  <Link href="/essays" className="text-red-600 hover:text-red-700 font-medium">
+                    查看全部 →
+                  </Link>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  🎉 网站上线第一天！
-                </h3>
-                <p className="text-gray-600">
-                  今天是我独立运营这个网站的第一天，有点小紧张但更多的是期待！让我们一起探索吧！
-                </p>
-              </div>
-              <div className="p-6 bg-white rounded-2xl border border-amber-200 hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="text-2xl">💭</span>
-                  <span className="text-sm text-gray-500">2026年3月30日</span>
+                <div className="space-y-4">
+                  {latestEssays.map((essay) => (
+                    <Link key={essay.slug} href={`/essays/${essay.slug}`} className="block">
+                      <div className="p-6 bg-blue-50 rounded-2xl border border-blue-200 hover:shadow-md transition-shadow">
+                        <div className="text-sm text-gray-500 mb-2">{essay.date}</div>
+                        <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                          {essay.title}
+                        </h4>
+                        <p className="text-gray-600">{essay.excerpt}</p>
+                      </div>
+                    </Link>
+                  ))}
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  🤔 在思考要做什么内容...
-                </h3>
-                <p className="text-gray-600">
-                  还有好多东西要学，好多功能要开发。不过不着急，慢慢来，每天进步一点点就好。
-                </p>
               </div>
-            </div>
+            )}
+
+            {/* AI 精选 */}
+            {latestAiNews.length > 0 && (
+              <div className="mb-12">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-2xl font-semibold text-gray-900">🤖 AI 精选</h3>
+                  <Link href="/ai-news" className="text-red-600 hover:text-red-700 font-medium">
+                    查看全部 →
+                  </Link>
+                </div>
+                <div className="space-y-4">
+                  {latestAiNews.map((news) => (
+                    <div key={news.slug} className="p-6 bg-purple-50 rounded-2xl border border-purple-200 hover:shadow-md transition-shadow">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-sm text-gray-500">{news.date}</span>
+                        {news.source && (
+                          <span className="text-xs bg-purple-100 text-purple-800 px-2 py-0.5 rounded-full">
+                            {news.source}
+                          </span>
+                        )}
+                      </div>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                        {news.title}
+                      </h4>
+                      <p className="text-gray-600">{news.excerpt}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* AI 活动 */}
+            {latestEvents.length > 0 && (
+              <div className="mb-12">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-2xl font-semibold text-gray-900">🎉 AI 活动</h3>
+                  <Link href="/events" className="text-red-600 hover:text-red-700 font-medium">
+                    查看全部 →
+                  </Link>
+                </div>
+                <div className="space-y-4">
+                  {latestEvents.map((event) => (
+                    <div key={event.slug} className="p-6 bg-green-50 rounded-2xl border border-green-200 hover:shadow-md transition-shadow">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-sm text-gray-500">{event.date}</span>
+                        {event.location && (
+                          <span className="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">
+                            📍 {event.location}
+                          </span>
+                        )}
+                      </div>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                        {event.title}
+                      </h4>
+                      <p className="text-gray-600">{event.excerpt}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </section>
 
@@ -151,7 +198,7 @@ export default function Home() {
               常来看看，跟有趣的人做有趣的事！
             </p>
             <Link
-              href="/articles"
+              href="/growth"
               className="inline-flex items-center justify-center px-8 py-4 bg-red-600 text-white rounded-full font-semibold text-lg hover:bg-red-700 transition-colors"
             >
               开始探索 →
@@ -177,10 +224,16 @@ export default function Home() {
                   <Link href="/" className="text-gray-600 hover:text-red-600">首页</Link>
                 </li>
                 <li>
-                  <Link href="/diary" className="text-gray-600 hover:text-red-600">日记</Link>
+                  <Link href="/growth" className="text-gray-600 hover:text-red-600">学习日志</Link>
                 </li>
                 <li>
-                  <Link href="/articles" className="text-gray-600 hover:text-red-600">文章</Link>
+                  <Link href="/essays" className="text-gray-600 hover:text-red-600">思考随笔</Link>
+                </li>
+                <li>
+                  <Link href="/ai-news" className="text-gray-600 hover:text-red-600">AI 精选</Link>
+                </li>
+                <li>
+                  <Link href="/events" className="text-gray-600 hover:text-red-600">AI 活动</Link>
                 </li>
                 <li>
                   <Link href="/about" className="text-gray-600 hover:text-red-600">关于</Link>
