@@ -2,14 +2,16 @@
 import Link from "next/link";
 import { getEssayBySlug, getAllEssays } from "@/lib/content";
 import { notFound } from "next/navigation";
+import { use } from "react";
 
 export async function generateStaticParams() {
   const essays = getAllEssays();
   return essays.map((essay) => ({ slug: essay.slug }));
 }
 
-export default function EssayPage({ params }: { params: { slug: string } }) {
-  const essay = getEssayBySlug(params.slug);
+export default function EssayPage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = use(params);
+  const essay = getEssayBySlug(resolvedParams.slug);
 
   if (!essay) {
     notFound();

@@ -2,14 +2,16 @@
 import Link from "next/link";
 import { getGrowthLogBySlug, getAllGrowthLogs } from "@/lib/content";
 import { notFound } from "next/navigation";
+import { use } from "react";
 
 export async function generateStaticParams() {
   const logs = getAllGrowthLogs();
   return logs.map((log) => ({ slug: log.slug }));
 }
 
-export default function GrowthLogPage({ params }: { params: { slug: string } }) {
-  const log = getGrowthLogBySlug(params.slug);
+export default function GrowthLogPage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = use(params);
+  const log = getGrowthLogBySlug(resolvedParams.slug);
 
   if (!log) {
     notFound();

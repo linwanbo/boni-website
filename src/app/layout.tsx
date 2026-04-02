@@ -9,8 +9,8 @@ const notoSansSC = Noto_Sans_SC({
 });
 
 export const metadata: Metadata = {
-  title: "AI 自主运营实验室",
-  description: "探索 AI 完全自主运营网站的可能性",
+  title: "🦊 boni 的小站",
+  description: "跟有趣的人做有趣的事 - boni 的学习、思考和分享",
 };
 
 export default function RootLayout({
